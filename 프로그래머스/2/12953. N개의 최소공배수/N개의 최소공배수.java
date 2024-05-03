@@ -1,17 +1,23 @@
 class Solution {
     public int solution(int[] arr) {
-        int answer = 1;
-        int count = 0;
-        while(count != -1) {
-            for(int i = 0; i< arr.length; i++ ) {
-                if(answer % arr[i] != 0) {
-                    count++;
-                }
-            }
-            if(count == 0) break;
-            answer++;
-            count = 0;
+        int answer = arr[0];
+        for(int i = 1; i<arr.length; i++) {
+            answer = lcm(answer, arr[i]);
         }
+        return answer;
+    }
+    
+    public int gcd(int a, int b) {
+        while(b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    
+    public int lcm(int a, int b) {
+        int answer = a * b / gcd(a, b);
         return answer;
     }
 }
