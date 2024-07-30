@@ -1,41 +1,48 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
+    static ArrayDeque<Integer> queue = new ArrayDeque<>();
+    static ArrayList<ArrayList<Integer>> computer = new ArrayList<>();
     static boolean[] visited;
-    static List<List<Integer>> arr;
-    public static void main(String args[]) throws Exception {
+    static int count = 0;
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int length = Integer.parseInt(br.readLine());
-        int arrayLength = Integer.parseInt(br.readLine());
-        arr = new ArrayList<>();
-        visited = new boolean[length+1];
-        for(int i = 0; i<=length; i++) {
-            arr.add(new ArrayList<>());
+        int computerNumber = Integer.parseInt(br.readLine());
+        for(int i = 0; i < computerNumber + 1; i++) {
+            computer.add(new ArrayList<>());
         }
-        for(int i = 0; i<arrayLength; i++) {
+        visited = new boolean[computerNumber + 1];
+        int n = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int index = Integer.parseInt(st.nextToken());
-            int number = Integer.parseInt(st.nextToken());
-            arr.get(index).add(number);
-            arr.get(number).add(index);
+            int node = Integer.parseInt(st.nextToken());
+            int edge = Integer.parseInt(st.nextToken());
+            computer.get(node).add(edge);
+            computer.get(edge).add(node);
         }
-        dfs(1);
-        int count = -1;
-        for(boolean i: visited) {
-            if(i) count++;
-        }
+        bfs(1);
         System.out.println(count);
+
     }
-    public static void dfs(int number){
-        visited[number] = true;
-        for(int i : arr.get(number)) {
-            if(!visited[i]) {
-                dfs(i);
+
+    public static void bfs(int start) {
+        if(!visited[start]) {
+            visited[start] = true;
+            queue.offer(start);
+
+            while (!queue.isEmpty()) {
+                int node = queue.poll();
+
+                for(int nextNode : computer.get(node)) {
+                    if(!visited[nextNode]) {
+                        visited[nextNode] = true;
+                        queue.offer(nextNode);
+                        count++;
+                    }
+                }
             }
         }
     }
