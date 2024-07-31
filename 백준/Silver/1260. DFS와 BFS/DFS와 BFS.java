@@ -1,64 +1,72 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static List<ArrayList<Integer>> list;
-    static boolean[] visited;
-    static boolean[] visited2;
-    static StringBuffer sb;
-    static StringBuffer sb2;
-    static Queue<Integer> queue;
-    public static void main(String[] args) throws Exception {
+
+    static boolean[] dfsVisited;
+    static boolean[] bfsVisited;
+    static ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
+    static ArrayDeque<Integer> deque = new ArrayDeque<>();
+    static StringBuffer sb1 = new StringBuffer();
+    static StringBuffer sb2 = new StringBuffer();
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int nodeCount = Integer.parseInt(st.nextToken());
-        int edgeCount = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(st.nextToken());
-        list = new ArrayList<>();
-        queue = new LinkedList<>();
-        sb = new StringBuffer();
-        sb2 = new StringBuffer();
-        visited = new boolean[nodeCount+1];
-        visited2 = new boolean[nodeCount+1];
-        for(int i = 0; i<nodeCount+1; i++) {
-            ArrayList<Integer> nodeList = new ArrayList<>();
-            list.add(nodeList);
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int v = Integer.parseInt(st.nextToken());
+        dfsVisited = new boolean[n + 1];
+        bfsVisited = new boolean[n + 1];
+        for (int i = 0; i < n+1; i++) {
+            adjList.add(new ArrayList<>());
         }
-        for(int i = 0; i<edgeCount; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
             int node = Integer.parseInt(st.nextToken());
-            int nodeConnect = Integer.parseInt(st.nextToken());
-            list.get(node).add(nodeConnect);
-            list.get(nodeConnect).add(node);
+            int edge = Integer.parseInt(st.nextToken());
+            adjList.get(node).add(edge);
+            adjList.get(edge).add(node);
+
         }
-        for(ArrayList<Integer> i : list) {
-            i.sort(null);
+        for (ArrayList<Integer> list : adjList) {
+            list.sort(null);
         }
-        dfs(start);
-        bfs(start);
-        System.out.println(sb);
-        System.out.println(sb2);
+        dfs(v);
+        bfs(v);
+
+        System.out.println(sb1.toString().trim());
+        System.out.println(sb2.toString().trim());
     }
 
-    public static void dfs(int visit) {
-        if(visited[visit]) return;
-        visited[visit] = true;
-        sb.append(visit + " ");
-        for(int i : list.get(visit)) {
-            dfs(i);
+    static void dfs(int start) {
+        if(!dfsVisited[start]) {
+            dfsVisited[start] = true;
+            sb1.append(start).append(" ");
+            for(Integer v : adjList.get(start)) {
+                dfs(v);
+            }
         }
     }
-    public static void bfs(int visit) {
-        if(visited2[visit]) return;
-        visited2[visit] = true;
-        sb2.append(visit + " ");
-        for(int i: list.get(visit)) {
-            queue.add(i);
+    static void bfs(int start) {
+        if(bfsVisited[start]) {
+            return;
         }
-        while (!queue.isEmpty()) {
-            bfs(queue.poll());
-        }
+            bfsVisited[start] = true;
+            deque.offer(start);
+            sb2.append(start).append(" ");
+            while (!deque.isEmpty()) {
+                int v = deque.poll();
+                for(Integer w : adjList.get(v)) {
+                    if(!bfsVisited[w]) {
+                        bfsVisited[w] = true;
+                        deque.offer(w);
+                        sb2.append(w).append(" ");
+                    }
+                }
+            }
+
     }
 }
-
