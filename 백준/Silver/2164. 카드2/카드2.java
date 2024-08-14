@@ -1,23 +1,24 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Queue<Integer> queue = new LinkedList<>();
-
-        int cardCount = Integer.parseInt(br.readLine());
-        for(int i = 0; i<cardCount; i++) {
-            queue.add(i+1);
+        int n = Integer.parseInt(br.readLine());
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        for (int i = 1; i <= n; i++) {
+            deque.add(i);
         }
-        while (queue.size() != 1) {
-            queue.remove();
-            queue.add(queue.poll());
-        }
-        System.out.println(queue.poll());
+        int index = 1;
 
+        while(deque.size() > 1) {
+            if(index % 2 == 0) {
+                deque.offer(deque.poll());
+            } else {
+                deque.poll();
+            }
+            index++;
+        }
+        System.out.println(deque.poll());
     }
 }
