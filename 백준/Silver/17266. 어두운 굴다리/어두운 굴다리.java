@@ -8,36 +8,36 @@ public class Main {
         int m = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
         int[] arr = new int[m];
-        int answer = 1;
-        for (int i = 0; i < m; i++) {
+        for(int i = 0; i < m; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        int min = 1;
         int max = n;
-
+        int min = 1;
+        int result = 0;
         while (min <= max) {
             int mid = (min + max) / 2;
-            if(cover(arr, n, mid)) {
-                answer = mid;
+            if(searchBoolean(arr, mid, n)) {
                 max = mid - 1;
+                result = mid;
             } else {
                 min = mid + 1;
             }
         }
-        System.out.println(answer);
+
+        System.out.println(result);
     }
 
-    private static boolean cover(int[] arr, int length, int height) {
-        int lastCovered = 0;
-
-        for(int a : arr ) {
-            if (a - height > lastCovered) {
+    private static boolean searchBoolean (int[] arr, int mid, int length) {
+        int start = 0;
+        for(int i: arr) {
+            if(i - mid <= start) {
+                start = i + mid;
+            } else {
                 return false;
             }
-            lastCovered = a + height;
         }
-
-        return lastCovered >= length;
+        return start >= length;
     }
+
+
 }
