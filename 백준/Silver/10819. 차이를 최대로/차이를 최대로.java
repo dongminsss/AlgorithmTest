@@ -3,46 +3,46 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int maxResult = Integer.MIN_VALUE;
-    static int[] arr;
+    static int maxValue = Integer.MIN_VALUE;
+    static int length;
     static boolean[] visited;
-    static int n;
+    static int[] numbers;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        arr = new int[n];
+        int n = Integer.parseInt(br.readLine());
+        numbers = new int[n];
+        length = n;
         visited = new boolean[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            numbers[i] = Integer.parseInt(st.nextToken());
         }
         solve(new ArrayList<>());
-        System.out.println(maxResult);
+        System.out.println(maxValue);
     }
 
-    private static void solve(List<Integer> current) {
-        if(current.size() == n){
-            maxResult = Math.max(maxResult, cal(current));
+    static void solve(List<Integer> current) {
+        if(current.size() == length) {
+            maxValue = Math.max(maxValue, cal(current));
             return;
         }
 
-        for(int i = 0; i<n; i++) {
-            if(!visited[i]){
+        for(int i = 0; i<length; i++) {
+            if(!visited[i]) {
                 visited[i] = true;
-                current.add(arr[i]);
+                current.add(numbers[i]);
                 solve(current);
                 current.remove(current.size()-1);
                 visited[i] = false;
             }
         }
-
     }
-
-    private static int cal(List<Integer> list) {
+    static int cal(List<Integer> list) {
         int sum = 0;
-        for(int i = 0; i < list.size() - 1; i++) {
-            sum += Math.abs(list.get(i) - list.get(i + 1));
+        for (int i = 0; i < list.size()-1; i++) {
+            sum += Math.abs(list.get(i)-list.get(i+1));
         }
         return sum;
     }
+
 }
