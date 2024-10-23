@@ -1,27 +1,24 @@
 import java.util.*;
 class Solution {
-    static String[] arr;
-    static ArrayList<String> list;
+    static List<String> list = new ArrayList<>();
+    static char[] words = {'A','E','I','O','U'};
     public int solution(String word) {
-        list = new ArrayList<>();
-        arr = new String[]{"A","E","I","O","U"};
-        int answer = 0;
-        burt("", 0);
-        for(int i = 0; i<list.size(); i++) {
-            if(word.equals(list.get(i))) {
-                answer = i;
-                break;
-            }
-        }
         
+        
+        generateWord("");
+        list.sort(null);
+        
+        int answer = list.indexOf(word);
         return answer;
     }
     
-    static void burt(String str, int depth) {
-        list.add(str);
-        if(depth == 5) return;
-        for(int i = 0; i<arr.length; i++) {
-            burt(str+arr[i], depth+1);
+    private static void generateWord(String word) {
+        if(word.length() > 5) return;
+        
+        list.add(word);
+        
+        for(char c : words) {
+            generateWord(word + c);
         }
     }
 }
