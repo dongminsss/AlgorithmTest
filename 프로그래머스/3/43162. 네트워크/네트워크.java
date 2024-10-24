@@ -1,33 +1,30 @@
 import java.util.*;
 class Solution {
     static boolean[] visited;
-    static ArrayList<ArrayList<Integer>> network;
+    static int[][] network;
+    static int count;
     public int solution(int n, int[][] computers) {
-        network = new ArrayList<>();
         visited = new boolean[n];
-        for(int i = 0; i<n; i++) {
-            network.add(new ArrayList<Integer>());
+        network = computers;
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                dfs(i);
+                count++;
+            }   
         }
-        for(int i = 0; i<n; i++) {
-            for(int j = 0; j<n; j++) {
-                if(i != j && computers[i][j] == 1) {
-                    network.get(i).add(j);
-                    network.get(j).add(i);
-                }
-            }
-        }
-        int answer = 0;
-        for(int i = 0; i<n; i++) {
-            answer += dfs(i);
-        }
+        int answer = count;
         return answer;
     }
-    public static int dfs (int node) {
-        if(visited[node]) return 0;
-        visited[node] = true;
-        for(Integer i : network.get(node)) {
-            dfs(i);
+    
+    private static void dfs(int computer) {
+        if(visited[computer]) return;
+        
+        visited[computer] = true;
+        
+        for(int i = 0; i < network[computer].length; i++) {
+            if(network[computer][i] != 0 && computer != i) dfs( i);
         }
-        return 1;
+        
+        
     }
 }
