@@ -1,42 +1,28 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int length = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        Map<Integer, Integer> map = new HashMap<>();
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] arr = new int[length];
-
-        for(int i = 0; i<length; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        for(int i = 0; i < n; i++) {
+            map.put(Integer.parseInt(st.nextToken()), i);
         }
-        Arrays.sort(arr);
-        int searchLength = Integer.parseInt(br.readLine());
+
+        int m = Integer.parseInt(br.readLine());
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i< searchLength; i++) {
-            binarySearch(arr, Integer.parseInt(st.nextToken()));
+        for(int i = 0; i < m; i++) {
+            int a = Integer.parseInt(st.nextToken());
+            if(map.containsKey(a)) {
+                System.out.println(1);
+            }else {
+                System.out.println(0);
+            }
         }
 
-    }
-    static void binarySearch(int[] sortedArr, int n) {
-        int middle = sortedArr.length / 2;
-        int startIndex = 0;
-        int endIndex = sortedArr.length -1;
-        while (startIndex <= endIndex ) {
-            if( n < sortedArr[middle]) {
-                endIndex = middle - 1;
-            } else if (n > sortedArr[middle]) {
-                startIndex = middle + 1;
-            } else {
-                System.out.println(1);
-                return;
-            }
-            middle = (startIndex + endIndex) / 2;
-        }
-        System.out.println(0);
+
     }
 }
