@@ -3,50 +3,49 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] numbers = new int[n];
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-
+        for(int i = 0; i < n; i++) {
+            numbers[i] = Integer.parseInt(br.readLine());
+            map.put(numbers[i], map.getOrDefault(numbers[i], 0) + 1);
         }
-        Arrays.sort(arr);
+        int answer1 = 0;
+        int answer2 = 0;
+        int answer3 = 0;
+        int answer4 = 0;
 
-        double sum = 0;
-        for (int a : arr) {
-            sum += a;
+        for(int i : numbers) {
+            answer1 += i;
         }
+        answer1 = (int)Math.round((double) answer1 / n);
+        System.out.println(answer1);
 
-        System.out.println(Math.round(sum / n));
-        System.out.println(arr[n / 2]);
+        Arrays.sort(numbers);
+        answer2 = numbers[n / 2];
+        System.out.println(answer2);
 
-        int max = 0;
         List<Integer> list = new ArrayList<>();
-
-        for(Integer key : map.keySet()) {
-            if(map.get(key) > max) {
-                max = map.get(key);
-            }
+        int max = Collections.max(map.values());
+        for(int key : map.keySet()) {
+            if(map.get(key) == max) list.add(key);
         }
-        for (Integer key : map.keySet()) {
-            if (map.get(key) == max) list.add(key);
-        }
-
+        
         if(list.size() == 1) {
-            System.out.println(list.get(0));
+            answer3 = list.get(0);
         } else {
             list.sort(null);
-            System.out.println(list.get(1));
+            answer3 = list.get(1);
         }
+        System.out.println(answer3);
+
+        answer4 = numbers[numbers.length - 1] - numbers[0];
+        System.out.println(answer4);
 
 
 
-        System.out.println(arr[arr.length - 1] - arr[0]);
+
     }
 }
