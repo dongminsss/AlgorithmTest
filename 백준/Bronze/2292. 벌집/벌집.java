@@ -1,22 +1,20 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
-public class Main{
-    public static void main(String[] args) throws Exception {
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int number = Integer.parseInt(br.readLine());
-        int result = 0;
-        int count = 0;
-        int plus = 1;
-        while (true) {
-            if(number <= plus) {
-                break;
-            } else {
-                count++;
-                plus += 6 * count;
-            }
+        int n = Integer.parseInt(br.readLine());
+
+        int count = 1;
+        int sum = 1;
+        int answer = 1;
+        while (count < n) {
+            count = count + (sum * 6);
+            sum++;
+            answer++;
         }
-        System.out.println(count+1);
+        System.out.println(answer);
     }
 }
