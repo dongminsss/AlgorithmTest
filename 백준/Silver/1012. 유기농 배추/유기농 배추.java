@@ -1,58 +1,65 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    static boolean[][] vistited;
-    static int[][] arr;
-    static int[] dirX = {1,-1,0,0};
-    static int[] dirY = {0,0,-1,1};
-    static int nowX, nowY, w, h;
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int testCase = Integer.parseInt(br.readLine());
-        for (int i = 0; i < testCase; i++) {
+        int t = Integer.parseInt(br.readLine());
+
+        for(int i = 0; i < t; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            w = Integer.parseInt(st.nextToken());
-            h = Integer.parseInt(st.nextToken());
-            int count = Integer.parseInt(st.nextToken());
-            arr = new int[h][w];
-            vistited = new boolean[h][w];
-            int result = 0;
-            for (int j = 0; j <count; j++) {
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+
+            int[][] matrix = new int[m][n];
+            for(int j = 0; j < k; j++) {
                 st = new StringTokenizer(br.readLine());
                 int x = Integer.parseInt(st.nextToken());
                 int y = Integer.parseInt(st.nextToken());
-                arr[y][x] = 1;
+                matrix[y][x] = 1;
             }
-            for (int k = 0; k <h ; k++) {
-                for (int l = 0; l <w ; l++) {
-                    if(vistited[k][l] != true && arr[k][l] == 1) {
-                        result++;
-                        dfs(l, k);
+
+            System.out.println(bfs(matrix));
+
+
+        }
+
+    }
+
+    private static int bfs(int[][] matrix) {
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        int count = 0;
+
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[i].length; j++) {
+                if(visited[i][j] == false && matrix[i][j] == 1) {
+                    queue.add(new int[] {i, j});
+                    count++;
+                    visited[i][j] = true;
+                    while(!queue.isEmpty()) {
+                        int[] curr = queue.poll();
+                        for(int k = 0; k < 4; k++) {
+                            int x = curr[0] + dx[k];
+                            int y = curr[1] + dy[k];
+                            if(range(x,y,matrix.length, matrix[i].length) && visited[x][y] == false && matrix[x][y] == 1) {
+                                queue.add(new int[] {x, y});
+                                visited[x][y] = true;
+                            }
+                        }
                     }
                 }
             }
-            System.out.println(result);
         }
-
-
+        return count;
     }
-    public static void dfs(int x, int y) {
-        if(vistited[y][x] != true && arr[y][x] == 1) {
-            vistited[y][x] = true;
-            for(int i = 0; i<4; i++) {
-                nowX = x + dirX[i];
-                nowY = y + dirY[i];
-                if(range()) {
-                    dfs(nowX, nowY);
-                }
-            }
-        }
 
+    private static boolean range(int x, int y, int xLength, int yLength) {
+        return x >= 0 && y >= 0 && x < xLength && y < yLength;
     }
-    public static boolean range() {
-        return (nowY >= 0 && nowX >= 0 && nowY < h && nowX < w);
-    }
+
 }
