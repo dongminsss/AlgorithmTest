@@ -1,22 +1,18 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception{
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int number = Integer.parseInt(br.readLine());
-        int[] arr = new int[number+1];
-        arr[1] = 0;
-        for(int i = 2; i<=number; i++) {
-            arr[i] = arr[i-1] + 1;
-            if(i % 2 == 0) arr[i] = Math.min(arr[i], arr[i/2]+1);
-            if(i % 3 == 0) arr[i] = Math.min(arr[i],arr[i/3] + 1);
+        int n = Integer.parseInt(br.readLine());
+        int[] dp = new int[n + 1];
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i-1] + 1;
+            if(i % 2 == 0) dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+            if( i % 3 == 0) dp[i] = Math.min(dp[i], dp[i / 3] + 1);
         }
-        System.out.println(arr[number]);
-    }
+        System.out.println(dp[n]);
+     }
 }
