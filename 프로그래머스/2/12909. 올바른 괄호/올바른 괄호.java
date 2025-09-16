@@ -2,20 +2,19 @@ import java.util.*;
 
 class Solution {
     boolean solution(String s) {
-        boolean answer = false;
+        if(s.charAt(0) == ')') return false;
         
-        Stack<Character> stack = new Stack<>();
-        for(int i= 0; i<s.length(); i++) {
-            
-            if(!stack.isEmpty() && stack.peek() == '(' && s.charAt(i) == ')') {
-                stack.pop();
+        ArrayDeque<Character> deque = new ArrayDeque<>();
+         boolean answer = true;
+        for(char c : s.toCharArray()) {
+            if(c == ')' && !deque.isEmpty()) {
+                char ch = deque.pop();
+                if(ch != '(') answer = false;
             } else {
-                stack.push(s.charAt(i));
+                deque.add(c);
             }
         }
-        if(stack.isEmpty()) {
-            answer = true;
-        } 
+        if(!deque.isEmpty()) answer = false;    
 
         return answer;
     }
