@@ -1,43 +1,45 @@
 import java.util.*;
 
 class Solution {
-    static int[] dist;
-    static ArrayList<ArrayList<int[]>> nodes = new ArrayList<>();
-    
     public int solution(int N, int[][] road, int K) {
         int answer = 0;
-        dist = new int[N+1];
+        List<List<int[]>> nodes = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        int[] dist = new int[N+1];
         Arrays.fill(dist, Integer.MAX_VALUE);
+        
         for(int i = 0; i<N+1; i++) {
             nodes.add(new ArrayList<>());
         }
-        for(int[] arr : road) {
-            nodes.get(arr[0]).add(new int[] {arr[1], arr[2]});
-            nodes.get(arr[1]).add(new int[] {arr[0], arr[2]});
+        for(int[] r : road) {
+            nodes.get(r[0]).add(new int[]{r[1] , r[2]});
+            nodes.get(r[1]).add(new int[] {r[0], r[2]});
         }
-        
         dist[1] = 0;
-        dfs(1);
+        pq.offer(new int[] {1, 0});
         
-        
-        for(int len : dist) {
-            if(len <= K) answer++;
-        }
-        
-        System.out.println(Arrays.toString(dist));
-        
-        return answer;
-    }
-    
-    private void dfs(int node) {
-        for(int[] arr : nodes.get(node)) {
-            int nDist =dist[node] + arr[1];
-            int nNode = arr[0];
+        while(!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int node = cur[0];
+            int cost = cur[1];
             
-            if(dist[nNode] > nDist) {
-                dist[nNode] = nDist;
-                dfs(nNode);
+            if(dist[node] < cost) continue;
+            
+            for(int[] next : nodes.get(node)) {
+                int nNode = next[0];
+                int nCost = next[1] + cost;
+                
+                if(dist[nNode] > nCost) {
+                    dist[nNode] = nCost;
+                    pq.offer(new int[] {nNode, nCost});
+                }
             }
         }
+        for(int d : dist) {
+            if(d <= K) answer++;
+        }
+        
+
+        return answer;
     }
 }
