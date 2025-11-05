@@ -1,15 +1,15 @@
 import java.util.*;
 
 class Solution {
-    static ArrayList<ArrayList<Integer>> network = new ArrayList<>();
-    static boolean[] v;
-    
+    private boolean[] visited;
+    private List<List<Integer>> network = new ArrayList<>();
     public int solution(int n, int[][] computers) {
-        v = new boolean[n];
-        
+        int answer = 0;
+        visited = new boolean[n];
         for(int i = 0; i<n; i++) {
             network.add(new ArrayList<>());
-        }    
+        }
+        
         for(int i = 0; i<n; i++) {
             for(int j = 0; j<n; j++) {
                 if(i != j && computers[i][j] == 1) {
@@ -19,20 +19,24 @@ class Solution {
             }
         }
         
-        int answer = 0;
-        
-        for(int i = 0; i<n; i++) {
-            answer += dfs(i);
+        for(int i = 0; i<n; i++){
+            if(!visited[i]) {
+                answer++;
+                visited[i] = true;
+                dfs(i);
+            }
         }
+        
         return answer;
     }
     
-    private int dfs(int idx) {
-        if(v[idx]) return 0;
-        v[idx] = true;
-        for(int computer : network.get(idx)) {
-            dfs(computer);
+    private void dfs(int node) {
+        
+        for(int next : network.get(node)) {
+            if(!visited[next]) {
+                visited[next] = true;
+                dfs(next);
+            }
         }
-        return 1;
     }
 }
