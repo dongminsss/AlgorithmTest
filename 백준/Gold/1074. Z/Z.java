@@ -1,44 +1,38 @@
-
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int r = Integer.parseInt(st.nextToken());
         int c = Integer.parseInt(st.nextToken());
-        int size = 1;
-        for(int i = 0; i < n; i++) {
-            size = size * 2;
+        int total = 1;
+        int result = 0;
+        for(int i = 0; i<n; i++) {
+            total *= 2;
         }
-        System.out.println(solve(size, r, c));
-    }
-
-    private static int solve(int size, int r, int c) {
-        int idx = 0;
-        int n = size / 2;
-
-        while (n > 0) {
-            int half = n * n;
-
-            if( r < n && c < n) {
-
-            } else if ( r < n && c >= n) {
-                idx += half;
-                c -= n;
-            } else if (r >= n && c < n) {
-                idx += 2 * half;
-                r -= n;
+        total *= total;
+        while (total >= 4) {
+            int len = (int)Math.sqrt(total);
+            int half = len / 2;
+            int sum = total / 4;
+            if(r < half && c < half) {
+                result += 0;
+            } else if(r < half) {
+                result += sum;
+            } else if (c < half) {
+                result += sum * 2;
             } else {
-                idx += 3 * half;
-                r -= n;
-                c -= n;
+                result += sum * 3;
             }
-            n /= 2;
+            r %= (len / 2);
+            c %= (len / 2);
+            total /= 4;
         }
-        return idx;
+        System.out.println(result);
     }
 }
