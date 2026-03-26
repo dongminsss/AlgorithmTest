@@ -2,34 +2,35 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Main {
-
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        List<int[]> list = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
+        int N = Integer.parseInt(br.readLine());
+        List<Xy> list = new ArrayList<>();
+        for(int i = 0; i < N; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            list.add(new int[]{x, y});
+            list.add(new Xy(x,y));
         }
-        list.sort((o1, o2) -> {
-            if(o1[1] == o2[1]) {
-                return o1[0] - o2[0];
-            } else {
-                return o1[1] - o2[1];
-            }
-        });
-
-        for(int[] arr : list) {
-            System.out.println(arr[0] + " " + arr[1]);
-        }
-
+        list.sort(Comparator.comparingInt((Xy xy) -> xy.y).thenComparingInt(xy -> xy.x));
+        list.stream().forEach(xy -> System.out.println(xy.toString()));
     }
+    static class Xy {
+        int x;
+        int y;
+        public Xy(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
+        @Override
+        public String toString() {
+            return x + " " + y;
+        }
+    }
 }
