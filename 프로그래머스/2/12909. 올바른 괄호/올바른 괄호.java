@@ -5,15 +5,16 @@ class Solution {
         boolean answer = true;
 
         ArrayDeque<Character> dq = new ArrayDeque<>();
-        dq.push(s.charAt(0));
-        for(int i = 1; i<s.length(); i++) {
-            char c = s.charAt(i);
-            if(!dq.isEmpty() && c == ')' && dq.peek() == '(') {
-                dq.pop();
-            } 
-            if(c == '(') dq.push(c);
+        for(char c : s.toCharArray()) {
+            if(!dq.isEmpty()) {
+                if(c == ')' && dq.peek() == '(') dq.pop();
+                if(c == '(') dq.push(c);
+            } else {
+                dq.push(c);
+            }
         }
         
-        return dq.isEmpty();
+        if(!dq.isEmpty()) return false;
+        return true;
     }
 }
